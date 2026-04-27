@@ -1,0 +1,47 @@
+[
+  {
+    "cidade": "Guaiba",
+    "estado": "RS",
+    "prioridade": "alta"
+  },
+  {
+    "cidade": "Eldorado do Sul",
+    "estado": "RS",
+    "prioridade": "alta"
+  },
+  {
+    "cidade": "Sao Jeronimo",
+    "estado": "RS",
+    "prioridade": "alta"
+  },
+  {
+    "cidade": "Arroio dos Ratos",
+    "estado": "RS",
+    "prioridade": "alta"
+  },
+  {
+    "cidade": "Charqueadas",
+    "estado": "RS",
+    "prioridade": "alta"
+  },
+  {
+    "cidade": "Tapes",
+    "estado": "RS",
+    "prioridade": "alta"
+  },
+  {
+    "cidade": "Barra do Ribeiro",
+    "estado": "RS",
+    "prioridade": "alta"
+  },
+  {
+    "cidade": "Capao da Canoa",
+    "estado": "RS",
+    "prioridade": "alta"
+  },
+  {
+    "cidade": "Xangrila",
+    "estado": "RS",
+    "prioridade": "alta"
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "provider_recommended": "supabase",
+  "env_required": [
+    "SUPABASE_URL",
+    "SUPABASE_SERVICE_ROLE_KEY"
+  ],
+  "env_optional": {
+    "SUPABASE_CURRENT_TABLE": "dashboard_current",
+    "SUPABASE_HISTORY_TABLE": "dashboard_history",
+    "SUPABASE_DASHBOARD_SLUG": "agente-imoveis"
+  },
+  "flow": [
+    "desktop executa coleta e inteligencia",
+    "desktop gera dashboard_data.json",
+    "desktop publica snapshot no Supabase",
+    "dashboard web externo le a base online"
+  ]
+}

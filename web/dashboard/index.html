@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel Executivo | Agente Imobiliario</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <div id="login-gate" class="access-gate hidden">
+      <div class="access-gate-card">
+        <p class="eyebrow">Acesso corporativo</p>
+        <h2>Entre no painel executivo</h2>
+        <p class="hero-text gate-text">
+          Painel interno do grupo com autenticacao por usuario, sessao e perfis de acesso.
+        </p>
+        <div class="gate-form">
+          <input id="login-username" class="filter-input" type="text" placeholder="Usuario" autocomplete="username" />
+          <input id="login-password" class="filter-input" type="password" placeholder="Senha" autocomplete="current-password" />
+        </div>
+        <div class="gate-actions">
+          <button id="login-button" class="refresh-button">Entrar no painel</button>
+          <small id="gate-error">Use um usuario autorizado da empresa para liberar o dashboard.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Supermercado Indio | Inteligencia imobiliaria executiva</p>
+          <h1>Dashboard web do agente imobiliario</h1>
+          <p class="hero-text">
+            Monitoramento de fontes, janela semanal, score operacional e score de investimento em uma visao unica para decisao.
+          </p>
+
+          <div class="hero-actions">
+            <button id="refresh-button" class="refresh-button">Atualizar painel</button>
+            <div class="hero-update">
+              <span class="status-label">Ultima execucao</span>
+              <strong id="execution-date">Aguardando ultima execucao</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <article class="hero-card">
+            <span class="status-label">Status da operacao</span>
+            <strong id="project-stage">Carregando...</strong>
+            <small id="report-date">Sem relatorio carregado</small>
+          </article>
+
+          <article class="hero-card hero-card-network">
+            <span class="status-label">Acesso do painel</span>
+            <strong id="access-mode">Carregando...</strong>
+            <div class="access-links">
+              <a id="local-url" class="record-link" href="#" target="_blank" rel="noreferrer">Abrir nesta maquina</a>
+              <a id="network-url" class="record-link" href="#" target="_blank" rel="noreferrer">Abrir na rede interna</a>
+            </div>
+            <small id="access-note">Compartilhe o link correto com sua equipe interna.</small>
+          </article>
+
+          <article class="hero-card hero-card-user">
+            <span class="status-label">Sessao ativa</span>
+            <strong id="user-display">Nao autenticado</strong>
+            <small id="user-role">Sem perfil carregado</small>
+            <div class="user-actions">
+              <span id="security-mode" class="tag">HTTP interno</span>
+              <button id="logout-button" class="secondary-button">Sair</button>
+            </div>
+          </article>
+        </div>
+      </header>
+
+      <main class="dashboard-grid">
+        <section class="panel panel-wide">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Resumo executivo</p>
+              <h2>Nucleo operacional do radar</h2>
+            </div>
+          </div>
+          <div id="kpi-grid" class="kpi-grid"></div>
+          <div class="filter-grid">
+            <input id="search-input" class="filter-input" type="text" placeholder="Buscar por titulo, ativo, cidade ou fonte" />
+            <select id="source-filter" class="filter-input">
+              <option value="">Todas as fontes</option>
+            </select>
+            <select id="decision-filter" class="filter-input">
+              <option value="">Todas as decisoes operacionais</option>
+            </select>
+            <select id="investment-filter" class="filter-input">
+              <option value="">Todas as decisoes de investimento</option>
+            </select>
+            <select id="state-filter" class="filter-input">
+              <option value="">Todos os estados</option>
+            </select>
+            <select id="geo-filter" class="filter-input">
+              <option value="">Todos os status geograficos</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="panel panel-highlight">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Janela semanal</p>
+              <h2>Movimento desde a ultima segunda</h2>
+            </div>
+          </div>
+          <div id="weekly-summary" class="movement-summary"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Qualidade de triagem</p>
+              <h2>Distribuicao por decisao operacional</h2>
+            </div>
+          </div>
+          <div id="decision-list" class="metric-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Decisao de capital</p>
+              <h2>Distribuicao por investimento</h2>
+            </div>
+          </div>
+          <div id="investment-list" class="metric-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Cobertura do radar</p>
+              <h2>Cidades e aderencia geografica</h2>
+            </div>
+          </div>
+          <div id="radar-list" class="metric-list"></div>
+          <div id="radar-cities" class="tag-cloud"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Fontes lideres</p>
+              <h2>Origens com maior volume</h2>
+            </div>
+          </div>
+          <div id="source-list" class="metric-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Excecoes</p>
+              <h2>Fontes com bloqueio ou cuidado especial</h2>
+            </div>
+          </div>
+          <div id="blocked-list" class="blocked-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Linha do tempo</p>
+              <h2>Ultimas execucoes</h2>
+            </div>
+          </div>
+          <div id="execution-history" class="metric-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Linha do tempo</p>
+              <h2>Ultimos relatorios</h2>
+            </div>
+          </div>
+          <div id="report-history" class="metric-list"></div>
+        </section>
+
+        <section class="panel panel-wide">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Movimentacao semanal</p>
+              <h2>Entradas, mudancas e saidas</h2>
+            </div>
+          </div>
+
+          <div class="movement-grid">
+            <article class="movement-card">
+              <div class="movement-card-header">
+                <span class="status-label">Entrou no radar</span>
+                <strong id="entered-total">0</strong>
+              </div>
+              <div id="entered-list" class="movement-list"></div>
+            </article>
+
+            <article class="movement-card">
+              <div class="movement-card-header">
+                <span class="status-label">Mudou desde a ultima segunda</span>
+                <strong id="changed-total">0</strong>
+              </div>
+              <div id="changed-list" class="movement-list"></div>
+            </article>
+
+            <article class="movement-card">
+              <div class="movement-card-header">
+                <span class="status-label">Saiu do radar</span>
+                <strong id="exited-total">0</strong>
+              </div>
+              <div id="exited-list" class="movement-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel panel-wide">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Oportunidades do motor</p>
+              <h2>Leitura priorizada para decisao</h2>
+            </div>
+          </div>
+          <div class="table-shell">
+            <table>
+              <thead>
+                <tr>
+                  <th>Inv.</th>
+                  <th>Dec. inv.</th>
+                  <th>Op.</th>
+                  <th>Dec. op.</th>
+                  <th>Ativo</th>
+                  <th>Cidade</th>
+                  <th>Fonte</th>
+                  <th>Preco</th>
+                  <th>Desc.</th>
+                  <th>Area</th>
+                </tr>
+              </thead>
+              <tbody id="opportunities-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/app.js"></script>
+  </body>
+</html>

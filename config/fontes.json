@@ -1,0 +1,592 @@
+[
+  {
+    "nome": "OLX Imoveis",
+    "categoria": "portal_venda",
+    "url": "https://www.olx.com.br/imoveis/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["08:00", "18:00"],
+    "tipos_ativos": ["casas", "terrenos", "sitios", "predios_comerciais", "galpoes_industriais", "apartamentos"],
+    "observacoes": "Bom para detectar anuncios recentes, proprietarios com urgencia e price drops."
+  },
+  {
+    "nome": "Mercado Livre Imoveis",
+    "categoria": "portal_venda",
+    "url": "https://imoveis.mercadolivre.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["10:00"],
+    "tipos_ativos": ["casas", "terrenos", "sitios", "predios_comerciais"],
+    "observacoes": "Radar complementar para captar anuncios fora dos portais tradicionais."
+  },
+  {
+    "nome": "ZAP Imoveis",
+    "categoria": "portal_venda",
+    "url": "https://www.zapimoveis.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["11:00", "19:00"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Canal forte para benchmark, comparativo de m2 e historico de preco."
+  },
+  {
+    "nome": "Viva Real",
+    "categoria": "portal_venda",
+    "url": "https://www.vivareal.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["11:30"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Bom para comparacao de precificacao e leitura de oferta profissional."
+  },
+  {
+    "nome": "Imovelweb",
+    "categoria": "portal_venda",
+    "url": "https://www.imovelweb.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["12:00"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Complementa a leitura de mercado em cidades com menor cobertura local."
+  },
+  {
+    "nome": "Chaves na Mao",
+    "categoria": "portal_venda",
+    "url": "https://www.chavesnamao.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["12:15"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Bom para ampliar capilaridade e detectar oferta dispersa."
+  },
+  {
+    "nome": "QuintoAndar",
+    "categoria": "portal_venda",
+    "url": "https://www.quintoandar.com.br/comprar/imovel/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "baixa",
+    "horarios_recomendados": ["12:30"],
+    "tipos_ativos": ["casas", "apartamentos"],
+    "observacoes": "Mais util em mercados liquidos e para referencia de produto urbano."
+  },
+  {
+    "nome": "Facebook Marketplace",
+    "categoria": "marketplace",
+    "url": "https://www.facebook.com/marketplace/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["07:30", "19:00"],
+    "tipos_ativos": ["casas", "terrenos", "sitios", "predios_comerciais", "galpoes_industriais"],
+    "observacoes": "Forte para oferta pulverizada, dono direto e urgencia de venda."
+  },
+  {
+    "nome": "Imoveis Caixa",
+    "categoria": "banco_leilao",
+    "url": "https://venda-imoveis.caixa.gov.br/sistema/busca-imovel.asp",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["09:00", "16:00"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Canal oficial com grande volume, desconto relevante e possibilidade de venda direta."
+  },
+  {
+    "nome": "Caixa - Lista Completa por Estado",
+    "categoria": "banco_leilao",
+    "url": "https://venda-imoveis.caixa.gov.br/sistema/download-lista.asp",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["09:15"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Fonte muito forte para automacao futura via arquivo estruturado."
+  },
+  {
+    "nome": "Seu Imovel BB",
+    "categoria": "banco_leilao",
+    "url": "https://www.seuimovelbb.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["10:45", "17:00"],
+    "tipos_ativos": ["casas", "terrenos", "sitios", "predios_comerciais", "apartamentos"],
+    "observacoes": "Plataforma oficial de divulgacao do Banco do Brasil para venda e leilao."
+  },
+  {
+    "nome": "Itau Imoveis",
+    "categoria": "banco_leilao",
+    "url": "https://www.itau.com.br/leiloes-imoveis",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["10:30"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Mistura leilao, venda direta e parceiros, util para oportunidades bancarias."
+  },
+  {
+    "nome": "Bradesco Leiloes",
+    "categoria": "banco_leilao",
+    "url": "https://banco.bradesco/html/classic/produtos-servicos/leiloes/index.shtm",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["10:50"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Complementa carteira bancaria com perfil de desconto relevante."
+  },
+  {
+    "nome": "Santander Imoveis",
+    "categoria": "banco_leilao",
+    "url": "https://www.santanderimoveis.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["11:10"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Importante para outlet de imoveis retomados."
+  },
+  {
+    "nome": "Banrisul - Bens a Venda",
+    "categoria": "banco_leilao",
+    "url": "https://www.banrisul.com.br/bob/site/link/bens-a-venda.html",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["09:30"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "galpoes_industriais"],
+    "observacoes": "Banco regional estrategico para o RS."
+  },
+  {
+    "nome": "Sicoob Imoveis",
+    "categoria": "banco_leilao",
+    "url": "https://leilaosicoob.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "baixa",
+    "horarios_recomendados": ["11:25"],
+    "tipos_ativos": ["casas", "terrenos", "apartamentos"],
+    "observacoes": "Fonte complementar para ativos retomados de cooperativas."
+  },
+  {
+    "nome": "Sicredi Classificados",
+    "categoria": "banco_leilao",
+    "url": "https://www.sicredi.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "baixa",
+    "horarios_recomendados": ["11:40"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais"],
+    "observacoes": "Monitoramento complementar de cooperativas e classificado bancario."
+  },
+  {
+    "nome": "Moraes Leiloes",
+    "categoria": "leiloeiro",
+    "url": "https://www.moraesleiloes.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["13:30"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Leiloeiro oficial forte no RS, com bom volume e relevancia regional."
+  },
+  {
+    "nome": "Peterlongo Leiloes",
+    "categoria": "leiloeiro",
+    "url": "https://www.peterlongoleiloes.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["13:40"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Leiloeiro tradicional, importante para judiciais e extrajudiciais."
+  },
+  {
+    "nome": "Fernanda Leiloes",
+    "categoria": "leiloeiro",
+    "url": "https://www.fernandaleiloes.lel.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["13:50"],
+    "tipos_ativos": ["casas", "terrenos", "apartamentos"],
+    "observacoes": "Complementa cobertura de judiciais online no RS."
+  },
+  {
+    "nome": "Muller Leiloes",
+    "categoria": "leiloeiro",
+    "url": "https://www.mullerleiloes.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["14:00"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Canal relevante para judiciais e extrajudiciais."
+  },
+  {
+    "nome": "Jorge Brasil Leiloes",
+    "categoria": "leiloeiro",
+    "url": "https://www.jorgebrasil.lel.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["14:10"],
+    "tipos_ativos": ["casas", "terrenos", "apartamentos"],
+    "observacoes": "Leiloeiro util para ampliar cobertura de judiciais no RS."
+  },
+  {
+    "nome": "Joyce Ribeiro Leiloes",
+    "categoria": "leiloeiro",
+    "url": "https://www.jrleiloes.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["14:20"],
+    "tipos_ativos": ["casas", "terrenos", "sitios", "predios_comerciais", "galpoes_industriais"],
+    "observacoes": "Leiloeira forte no sul, com historico de atuacao relevante."
+  },
+  {
+    "nome": "Zago Leiloes",
+    "categoria": "leiloeiro",
+    "url": "https://www.zagoleiloes.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["14:30"],
+    "tipos_ativos": ["casas", "terrenos", "sitios", "predios_comerciais", "galpoes_industriais"],
+    "observacoes": "Leiloeira com boa aderencia ao radar regional."
+  },
+  {
+    "nome": "Leiloeiro Bonatto",
+    "categoria": "leiloeiro",
+    "url": "https://leiloeirobonatto.com/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["14:40"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais"],
+    "observacoes": "Leiloeiro oficial com historico de imoveis no RS e boa clareza de praca."
+  },
+  {
+    "nome": "Frazao Leiloes",
+    "categoria": "leiloeiro",
+    "url": "https://www.frazaoleiloes.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["14:50"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Leiloeiro nacional com imoveis e parceiros bancarios."
+  },
+  {
+    "nome": "Turani Leiloes",
+    "categoria": "leiloeiro",
+    "url": "https://turanileiloes.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["15:00"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais"],
+    "observacoes": "Parceiro Banrisul, importante para extrajudiciais."
+  },
+  {
+    "nome": "Nogari Leiloes",
+    "categoria": "leiloeiro",
+    "url": "https://www.nogarileiloes.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["15:10"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais"],
+    "observacoes": "Parceiro Banrisul, complementa cobertura regional."
+  },
+  {
+    "nome": "TJRS - Leiloes",
+    "categoria": "leilao_publico",
+    "url": "https://www.tjrs.jus.br/novo/processos-e-servicos/consultas-processuais/leiloes/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["15:20"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "galpoes_industriais", "apartamentos"],
+    "observacoes": "Fonte institucional relevante para leiloes judiciais."
+  },
+  {
+    "nome": "TRT4 - Leiloeiros Credenciados",
+    "categoria": "leilao_publico",
+    "url": "https://www.trt4.jus.br/portais/trt4/leiloeiros-credenciados",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["15:30"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "galpoes_industriais"],
+    "observacoes": "Importante para ativos trabalhistas e corporativos."
+  },
+  {
+    "nome": "SINDILEI-RS",
+    "categoria": "leilao_publico",
+    "url": "https://www.sindileirs.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["15:40"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Agenda unificada de leiloeiros do RS."
+  },
+  {
+    "nome": "Superbid Exchange",
+    "categoria": "agregador_leilao",
+    "url": "https://www.superbid.net/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["12:00", "18:30"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "galpoes_industriais"],
+    "observacoes": "Marketplace de leiloes com alto volume e cobertura nacional."
+  },
+  {
+    "nome": "Sold Superbid",
+    "categoria": "agregador_leilao",
+    "url": "https://sold.superbid.net/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["12:10"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Braço imobiliario da Superbid, focado em ativos imobiliarios."
+  },
+  {
+    "nome": "Mega Leiloes",
+    "categoria": "agregador_leilao",
+    "url": "https://www.megaleiloes.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["12:20", "19:30"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "galpoes_industriais", "apartamentos"],
+    "observacoes": "Agregador nacional com grande volume de leiloes judiciais e extrajudiciais."
+  },
+  {
+    "nome": "Portal Zuk",
+    "categoria": "agregador_leilao",
+    "url": "https://www.portalzuk.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["12:30"],
+    "tipos_ativos": ["casas", "terrenos", "apartamentos"],
+    "observacoes": "Forte em imoveis e parceiros bancarios."
+  },
+  {
+    "nome": "Leilao Imovel",
+    "categoria": "agregador_leilao",
+    "url": "https://www.leilaoimovel.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["12:40", "20:00"],
+    "tipos_ativos": ["casas", "terrenos", "sitios", "predios_comerciais", "galpoes_industriais", "apartamentos"],
+    "observacoes": "Agregador forte para centralizar leiloeiros, etapas e descontos por cidade."
+  },
+  {
+    "nome": "Leilao Ninja",
+    "categoria": "agregador_leilao",
+    "url": "https://leilaoninja.com/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["12:50"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Interessante como radar automatizado multi-leiloeiro."
+  },
+  {
+    "nome": "Grupo Lance",
+    "categoria": "agregador_leilao",
+    "url": "https://www.grupolance.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["13:00"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "galpoes_industriais"],
+    "observacoes": "Cobertura complementar de judiciais, extrajudiciais e trabalhistas."
+  },
+  {
+    "nome": "Pro Leilao",
+    "categoria": "agregador_leilao",
+    "url": "https://www.proleilao.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["13:10"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais"],
+    "observacoes": "Agregador com sistema de alertas e boa leitura de oportunidade."
+  },
+  {
+    "nome": "Spy Leiloes",
+    "categoria": "agregador_leilao",
+    "url": "https://www.spyleiloes.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["13:15"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais"],
+    "observacoes": "Complementa analise por regiao e oportunidade."
+  },
+  {
+    "nome": "Nucleo Leiloes",
+    "categoria": "agregador_leilao",
+    "url": "https://nucleoleiloes.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["13:20"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Buscador amplo com grande base de imoveis e leiloeiros."
+  },
+  {
+    "nome": "Hasta Publica",
+    "categoria": "agregador_leilao",
+    "url": "https://www.hastapublica.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["13:25"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Importante para judiciais online."
+  },
+  {
+    "nome": "Leiloes Judiciais",
+    "categoria": "agregador_leilao",
+    "url": "https://www.leiloesjudiciais.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["13:27"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "apartamentos"],
+    "observacoes": "Agregador util para ampliar cobertura de ativos penhorados."
+  },
+  {
+    "nome": "Receita Federal - SLE",
+    "categoria": "leilao_publico",
+    "url": "https://www25.receita.fazenda.gov.br/sle-sociedade/portal/editais-disponiveis",
+    "tipo_monitoramento": "manual",
+    "prioridade": "baixa",
+    "horarios_recomendados": ["16:00"],
+    "tipos_ativos": ["nao_aplicavel"],
+    "observacoes": "Monitorar se houver bens imoveis e oportunidades patrimoniais especiais."
+  },
+  {
+    "nome": "SPU - Imoveis da Uniao",
+    "categoria": "leilao_publico",
+    "url": "https://imoveis.economia.gov.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["16:10"],
+    "tipos_ativos": ["terrenos", "predios_comerciais", "galpoes_industriais"],
+    "observacoes": "Fonte pouco explorada e com potencial de assimetria."
+  },
+  {
+    "nome": "SPU - Plataforma de Leilao",
+    "categoria": "leilao_publico",
+    "url": "https://imoveis.vendasgov.serpro.gov.br/leilao",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["16:20"],
+    "tipos_ativos": ["terrenos", "predios_comerciais"],
+    "observacoes": "Sessao publica online de ativos da uniao."
+  },
+  {
+    "nome": "INSS - Leiloes",
+    "categoria": "leilao_publico",
+    "url": "https://www.gov.br/inss/pt-br/acesso-a-informacao/leilao",
+    "tipo_monitoramento": "manual",
+    "prioridade": "baixa",
+    "horarios_recomendados": ["16:30"],
+    "tipos_ativos": ["predios_comerciais", "terrenos"],
+    "observacoes": "Pode gerar ativos pouco disputados e de perfil especial."
+  },
+  {
+    "nome": "SEFAZ-RS - Divida Ativa",
+    "categoria": "leilao_publico",
+    "url": "https://atendimento.receita.rs.gov.br/divida-ativa",
+    "tipo_monitoramento": "manual",
+    "prioridade": "baixa",
+    "horarios_recomendados": ["16:40"],
+    "tipos_ativos": ["nao_aplicavel"],
+    "observacoes": "Monitoramento institucional complementar para oportunidades especiais."
+  },
+  {
+    "nome": "Imobiliaria Guaiba",
+    "categoria": "imobiliaria_local",
+    "url": "https://imobiliariaguaiba.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["17:00"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais"],
+    "observacoes": "Imobiliaria local chave em Guaiba."
+  },
+  {
+    "nome": "Imobsul Imobiliaria",
+    "categoria": "imobiliaria_local",
+    "url": "https://www.imobsul.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["17:05"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais"],
+    "observacoes": "Radar local relevante para Guaiba e entorno."
+  },
+  {
+    "nome": "Vilmar Imoveis",
+    "categoria": "imobiliaria_local",
+    "url": "https://www.vilmarimoveisguaiba.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["17:10"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais"],
+    "observacoes": "Imobiliaria tradicional, util para capilaridade local."
+  },
+  {
+    "nome": "Almeida e Koch",
+    "categoria": "imobiliaria_local",
+    "url": "https://www.imobalmeida.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["17:15"],
+    "tipos_ativos": ["casas", "terrenos", "apartamentos"],
+    "observacoes": "Fonte importante para Eldorado do Sul."
+  },
+  {
+    "nome": "A Ideal Imoveis",
+    "categoria": "imobiliaria_local",
+    "url": "https://www.aidealimoveis.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["17:20"],
+    "tipos_ativos": ["casas", "terrenos", "apartamentos"],
+    "observacoes": "Complementa o radar de Eldorado e expansao."
+  },
+  {
+    "nome": "Andre Dorneles Imoveis",
+    "categoria": "imobiliaria_local",
+    "url": "https://www.andredornelesimoveis.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["17:25"],
+    "tipos_ativos": ["casas", "terrenos", "sitios"],
+    "observacoes": "Fonte local de Sao Jeronimo."
+  },
+  {
+    "nome": "Zicuri Imoveis",
+    "categoria": "imobiliaria_local",
+    "url": "https://www.zicuri.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "alta",
+    "horarios_recomendados": ["17:30"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais", "galpoes_industriais"],
+    "observacoes": "Imobiliaria lider regional em Charqueadas e Arroio dos Ratos."
+  },
+  {
+    "nome": "Pestana Imoveis",
+    "categoria": "imobiliaria_local",
+    "url": "https://www.pestanaimoveis.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["17:35"],
+    "tipos_ativos": ["casas", "terrenos", "predios_comerciais"],
+    "observacoes": "Complementa a regiao carbonifera."
+  },
+  {
+    "nome": "Caroline Imoveis",
+    "categoria": "imobiliaria_local",
+    "url": "http://www.carolineimoveis.com/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["17:40"],
+    "tipos_ativos": ["casas", "terrenos", "sitios"],
+    "observacoes": "Fonte local de Barra do Ribeiro."
+  },
+  {
+    "nome": "Gonsioroski Imoveis",
+    "categoria": "imobiliaria_local",
+    "url": "https://www.gonsioroskiimoveis.com/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "media",
+    "horarios_recomendados": ["17:45"],
+    "tipos_ativos": ["terrenos", "sitios", "rural"],
+    "observacoes": "Boa fonte para ativos rurais e de lazer."
+  },
+  {
+    "nome": "D'Casa Imoveis Butia",
+    "categoria": "imobiliaria_local",
+    "url": "https://dcasaimoveisbutia.com.br/",
+    "tipo_monitoramento": "manual",
+    "prioridade": "baixa",
+    "horarios_recomendados": ["17:50"],
+    "tipos_ativos": ["casas", "terrenos"],
+    "observacoes": "Mantida como radar de expansao futura regional."
+  }
+]

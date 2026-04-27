@@ -1,0 +1,254 @@
+:root {
+  --bg: #f5efe6;
+  --panel: rgba(255, 250, 244, 0.92);
+  --ink: #1a1f1d;
+  --muted: #68706a;
+  --line: rgba(26, 31, 29, 0.09);
+  --accent: #0f5b4f;
+  --gold: #b78028;
+  --shadow: 0 24px 60px rgba(59, 40, 18, 0.1);
+  --radius-xl: 28px;
+  --radius-lg: 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(183, 128, 40, 0.14), transparent 30%),
+    radial-gradient(circle at top right, rgba(15, 91, 79, 0.12), transparent 26%),
+    linear-gradient(180deg, #faf6ee 0%, var(--bg) 100%);
+}
+
+.page-shell {
+  width: min(1380px, calc(100vw - 48px));
+  margin: 0 auto;
+  padding: 28px 0 40px;
+}
+
+.hero,
+.panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.5fr 0.7fr;
+  gap: 20px;
+  padding: 28px;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, rgba(15, 91, 79, 0.96), rgba(18, 45, 59, 0.94));
+  color: #faf6f0;
+}
+
+.eyebrow,
+.panel-kicker,
+.status-label {
+  margin: 0 0 10px;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 0 0 10px;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 0.95;
+}
+
+.hero-text,
+.hero-side small {
+  color: rgba(250, 246, 240, 0.82);
+}
+
+.hero-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.hero-side strong {
+  font-size: 1.4rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+}
+
+.panel {
+  grid-column: span 4;
+  padding: 24px;
+  background: var(--panel);
+}
+
+.panel-wide {
+  grid-column: span 12;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.refresh-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, var(--gold), #9d6f20);
+  color: #fffef8;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.kpi-card,
+.metric-row {
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.kpi-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.9rem;
+}
+
+.metric-list,
+.tag-cloud {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tag-cloud {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.tag {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(15, 91, 79, 0.12);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.84rem;
+}
+
+.table-shell {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+
+table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+}
+
+thead {
+  background: rgba(15, 91, 79, 0.08);
+}
+
+th,
+td {
+  text-align: left;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.badge.attack {
+  background: rgba(15, 91, 79, 0.14);
+  color: var(--accent);
+}
+
+.badge.deep {
+  background: rgba(183, 128, 40, 0.18);
+  color: #8a6117;
+}
+
+.badge.monitor {
+  background: rgba(39, 86, 131, 0.14);
+  color: #275683;
+}
+
+.badge.discard {
+  background: rgba(163, 60, 40, 0.12);
+  color: #a33c28;
+}
+
+a.record-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+@media (max-width: 1180px) {
+  .hero,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .panel,
+  .panel-wide {
+    grid-column: span 1;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .page-shell {
+    width: min(100vw - 24px, 100%);
+  }
+
+  .hero,
+  .panel {
+    padding: 18px;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

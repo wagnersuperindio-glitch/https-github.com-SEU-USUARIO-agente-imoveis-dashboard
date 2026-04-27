@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "username": "wagner.admin",
+      "display_name": "Wagner",
+      "role": "admin",
+      "salt": "497bf7f24b0ce09455aae04e772e61ab",
+      "password_hash": "75c9627322589d90b9b8918074a6e542ae4c1690fbdbb9702aedd11adf7007a6",
+      "active": true
+    },
+    {
+      "username": "diretoria.indio",
+      "display_name": "Diretoria Grupo Indio",
+      "role": "diretoria",
+      "salt": "a90756f72410fd03427cfe280a044c33",
+      "password_hash": "8a1d9e83bbeb2279633df58788e1d50be17b4f6a203443c29ebce390b78b6452",
+      "active": true
+    },
+    {
+      "username": "expansao.indio",
+      "display_name": "Equipe de Expansao",
+      "role": "analista",
+      "salt": "1a09fb0c70dfbb2eb02938ac7e6db0ad",
+      "password_hash": "05a25edf5a094b6825c6dc859bc3e31a03eab1957f570f49896df1f815a007ac",
+      "active": true
+    }
+  ]
+}

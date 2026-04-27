@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Online | Agente Imobiliario</title>
+    <link rel="stylesheet" href="./app.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Supermercado Indio | Dashboard online</p>
+          <h1>Radar imobiliario fora da rede interna</h1>
+          <p class="hero-text">
+            Leitura online do snapshot publicado pelo desktop operacional no Supabase.
+          </p>
+        </div>
+        <div class="hero-side">
+          <span class="status-label">Ultima publicacao</span>
+          <strong id="generated-at">Carregando...</strong>
+          <small id="status-line">Aguardando base online</small>
+        </div>
+      </header>
+
+      <main class="grid">
+        <section class="panel panel-wide">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Resumo executivo</p>
+              <h2>Indicadores principais</h2>
+            </div>
+            <button id="refresh-button" class="refresh-button">Atualizar</button>
+          </div>
+          <div id="kpi-grid" class="kpi-grid"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Distribuicao</p>
+              <h2>Decisao operacional</h2>
+            </div>
+          </div>
+          <div id="decision-list" class="metric-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Distribuicao</p>
+              <h2>Decisao de investimento</h2>
+            </div>
+          </div>
+          <div id="investment-list" class="metric-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Cidades</p>
+              <h2>Radar priorizado</h2>
+            </div>
+          </div>
+          <div id="radar-cities" class="tag-cloud"></div>
+        </section>
+
+        <section class="panel panel-wide">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Top oportunidades</p>
+              <h2>Leitura online do snapshot atual</h2>
+            </div>
+          </div>
+          <div class="table-shell">
+            <table>
+              <thead>
+                <tr>
+                  <th>Inv.</th>
+                  <th>Dec. inv.</th>
+                  <th>Ativo</th>
+                  <th>Cidade</th>
+                  <th>Fonte</th>
+                  <th>Preco</th>
+                  <th>Desc.</th>
+                </tr>
+              </thead>
+              <tbody id="opportunities-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./supabase-config.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

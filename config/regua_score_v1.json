@@ -1,0 +1,35 @@
+{
+  "versao": "v1",
+  "objetivo": "Priorizar oportunidades imobiliarias e de leiloes com visao ampla de aquisicao, sem travar tese unica nesta fase.",
+  "pesos": {
+    "desconto": 0.35,
+    "liquidez": 0.2,
+    "risco": 0.2,
+    "potencial_estrategico": 0.15,
+    "facilidade_execucao": 0.1
+  },
+  "faixas_decisao": {
+    "atacar_agora": {
+      "score_minimo": 8.5,
+      "descricao": "Oportunidade forte, com assimetria real, risco controlado e boa chance de monetizacao."
+    },
+    "aprofundar_analise": {
+      "score_minimo": 7.0,
+      "descricao": "Ativo promissor, mas que ainda depende de validacao mais profunda."
+    },
+    "monitorar": {
+      "score_minimo": 5.5,
+      "descricao": "Ativo que merece radar, mas ainda nao justifica mobilizacao intensa."
+    },
+    "descartar": {
+      "score_minimo": 0.0,
+      "descricao": "Ativo sem assimetria suficiente ou com risco desproporcional."
+    }
+  },
+  "regras_criticas": {
+    "bloquear_se_data_passada": true,
+    "bloquear_se_sem_endereco_valor_tipo": true,
+    "alerta_urgente_score": 8.5,
+    "alerta_urgente_desconto_percentual": 50.0
+  }
+}

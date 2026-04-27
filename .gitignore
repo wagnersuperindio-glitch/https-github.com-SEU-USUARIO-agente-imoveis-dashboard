@@ -1,0 +1,16 @@
+.env
+.env.local
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+tmp_*.html
+
+saida/
+!saida/dashboard_online_publico/
+!saida/dashboard_online_publico/**
