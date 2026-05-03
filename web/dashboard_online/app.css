@@ -1,12 +1,14 @@
 :root {
-  --bg: #f5efe6;
-  --bg-soft: #ece0ce;
-  --panel: rgba(255, 250, 244, 0.94);
-  --ink: #1a1f1d;
+  --bg: #f2eadf;
+  --bg-soft: #e7d8c2;
+  --panel: rgba(255, 252, 247, 0.92);
+  --panel-strong: rgba(255, 249, 241, 0.97);
+  --ink: #18211f;
   --muted: #68706a;
-  --line: rgba(26, 31, 29, 0.09);
-  --line-strong: rgba(26, 31, 29, 0.16);
+  --line: rgba(24, 33, 31, 0.09);
+  --line-strong: rgba(24, 33, 31, 0.16);
   --accent: #0f5b4f;
+  --accent-strong: #0b473e;
   --accent-soft: rgba(15, 91, 79, 0.12);
   --gold: #b78028;
   --gold-soft: rgba(183, 128, 40, 0.16);
@@ -14,7 +16,8 @@
   --alert-soft: rgba(163, 60, 40, 0.14);
   --info: #275683;
   --info-soft: rgba(39, 86, 131, 0.14);
-  --shadow: 0 24px 60px rgba(59, 40, 18, 0.1);
+  --shadow: 0 24px 60px rgba(59, 40, 18, 0.08);
+  --shadow-strong: 0 34px 90px rgba(34, 26, 15, 0.14);
   --radius-xl: 28px;
   --radius-lg: 20px;
 }
@@ -28,9 +31,47 @@ body {
   color: var(--ink);
   font-family: "Segoe UI", "Trebuchet MS", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(183, 128, 40, 0.14), transparent 30%),
-    radial-gradient(circle at top right, rgba(15, 91, 79, 0.12), transparent 26%),
-    linear-gradient(180deg, #faf6ee 0%, var(--bg) 100%);
+    radial-gradient(circle at top left, rgba(183, 128, 40, 0.18), transparent 24%),
+    radial-gradient(circle at top right, rgba(15, 91, 79, 0.16), transparent 24%),
+    linear-gradient(180deg, #fbf7f0 0%, var(--bg) 56%, #efe4d5 100%);
+  overflow-x: hidden;
+}
+
+.ambient,
+.ambient-grid {
+  position: fixed;
+  inset: auto;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient {
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.34;
+}
+
+.ambient-a {
+  top: -120px;
+  left: -80px;
+  background: rgba(15, 91, 79, 0.22);
+}
+
+.ambient-b {
+  right: -120px;
+  bottom: 18%;
+  background: rgba(183, 128, 40, 0.22);
+}
+
+.ambient-grid {
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(15, 91, 79, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 91, 79, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent 80%);
 }
 
 .hidden {
@@ -55,7 +96,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-xl);
   background: linear-gradient(160deg, rgba(19, 37, 35, 0.98), rgba(31, 49, 59, 0.96));
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.26);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.28);
   color: #faf6f0;
 }
 
@@ -200,9 +241,40 @@ body {
 }
 
 .page-shell {
+  position: relative;
+  z-index: 1;
   width: min(1440px, calc(100vw - 48px));
   margin: 0 auto;
   padding: 28px 0 40px;
+}
+
+.top-ribbon {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.ribbon-block,
+.lane-card {
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  border-radius: 22px;
+  background: rgba(255, 250, 243, 0.7);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+}
+
+.ribbon-block strong,
+.lane-card strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.05rem;
+}
+
+.ribbon-block small,
+.lane-card p {
+  color: var(--muted);
 }
 
 .hero,
@@ -221,14 +293,33 @@ body {
   gap: 20px;
   padding: 28px;
   margin-bottom: 24px;
-  background: linear-gradient(135deg, rgba(15, 91, 79, 0.96), rgba(18, 45, 59, 0.94));
+  position: relative;
+  background:
+    url("./assets/radar-orbit.svg") right -90px center / 420px 420px no-repeat,
+    radial-gradient(circle at top right, rgba(255, 214, 149, 0.18), transparent 22%),
+    linear-gradient(135deg, rgba(15, 91, 79, 0.98), rgba(18, 45, 59, 0.96));
   color: #faf6f0;
+  box-shadow: var(--shadow-strong);
+  overflow: hidden;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  right: -120px;
+  top: -120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  filter: blur(10px);
 }
 
 .hero-copy h1 {
   margin: 0 0 10px;
   font-size: clamp(2rem, 4vw, 3.3rem);
   line-height: 0.95;
+  max-width: 11ch;
 }
 
 .eyebrow,
@@ -250,9 +341,54 @@ body {
   gap: 16px;
 }
 
+.hero-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0 18px;
+}
+
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #faf6f0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.hero-story {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.hero-story-card {
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hero-story-card strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.hero-story-card p {
+  margin: 0;
+  color: rgba(250, 246, 240, 0.82);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
 .hero-status-card {
   padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(12px);
 }
 
@@ -266,6 +402,18 @@ body {
   background: rgba(255, 255, 255, 0.07);
 }
 
+.executive-lane {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.lane-card-accent {
+  background: linear-gradient(135deg, rgba(15, 91, 79, 0.18), rgba(255, 250, 243, 0.82));
+  border-color: rgba(15, 91, 79, 0.18);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -276,10 +424,31 @@ body {
   grid-column: span 4;
   padding: 24px;
   background: var(--panel);
+  backdrop-filter: blur(10px);
 }
 
 .panel-wide {
   grid-column: span 12;
+}
+
+.panel-feature {
+  background: linear-gradient(180deg, rgba(255, 251, 245, 0.98), rgba(249, 241, 228, 0.9));
+  border-color: rgba(183, 128, 40, 0.14);
+}
+
+.panel-soft {
+  background: linear-gradient(180deg, rgba(255, 252, 247, 0.95), rgba(244, 235, 222, 0.86));
+}
+
+.panel-premium {
+  background: linear-gradient(180deg, rgba(255, 252, 248, 0.95), rgba(248, 241, 231, 0.9));
+}
+
+.panel-admin {
+  background:
+    radial-gradient(circle at top right, rgba(39, 86, 131, 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(255, 251, 245, 0.98), rgba(244, 235, 222, 0.92));
+  border-color: rgba(39, 86, 131, 0.16);
 }
 
 .panel-header {
@@ -303,6 +472,7 @@ body {
   color: #fffef8;
   font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 10px 24px rgba(157, 111, 32, 0.22);
 }
 
 .kpi-grid {
@@ -313,7 +483,17 @@ body {
 
 .kpi-card {
   padding: 16px;
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.76);
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--accent), var(--gold));
 }
 
 .kpi-card strong {
@@ -337,11 +517,12 @@ body {
 .filter-input {
   width: 100%;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 16px;
   padding: 12px 14px;
   color: var(--ink);
   font: inherit;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .metric-list,
@@ -357,7 +538,7 @@ body {
   justify-content: space-between;
   gap: 12px;
   padding: 14px 16px;
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.74);
 }
 
 .metric-row strong {
@@ -386,6 +567,7 @@ body {
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: 20px;
+  background: rgba(255, 255, 255, 0.74);
 }
 
 table {
@@ -395,7 +577,7 @@ table {
 }
 
 thead {
-  background: rgba(15, 91, 79, 0.08);
+  background: linear-gradient(180deg, rgba(15, 91, 79, 0.09), rgba(15, 91, 79, 0.04));
 }
 
 th,
@@ -480,6 +662,8 @@ a.record-link:hover {
 }
 
 @media (max-width: 1260px) {
+  .top-ribbon,
+  .executive-lane,
   .hero,
   .grid {
     grid-template-columns: 1fr;
@@ -497,6 +681,10 @@ a.record-link:hover {
   .filter-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .hero-story {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 760px) {
@@ -512,6 +700,11 @@ a.record-link:hover {
   .kpi-grid,
   .filter-grid,
   .auth-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .top-ribbon,
+  .executive-lane {
     grid-template-columns: 1fr;
   }
 }

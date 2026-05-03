@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="./app.css" />
   </head>
   <body>
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+    <div class="ambient-grid"></div>
+
     <div id="auth-gate" class="auth-gate">
       <div class="auth-card">
         <p class="eyebrow">Supermercado Indio | Acesso protegido</p>
@@ -61,6 +65,24 @@
     </div>
 
     <div class="page-shell">
+      <section class="top-ribbon">
+        <div class="ribbon-block">
+          <span class="status-label">Operacao</span>
+          <strong>Radar imobiliario executivo</strong>
+          <small>Dash online com leitura de oportunidade, fila de acesso e governanca de decisao.</small>
+        </div>
+        <div class="ribbon-block">
+          <span class="status-label">Atualizacao</span>
+          <strong>Segunda e quarta</strong>
+          <small>Processamento recorrente as 10:00 com publicacao web e base online.</small>
+        </div>
+        <div class="ribbon-block">
+          <span class="status-label">Controle</span>
+          <strong>Leilao + compra direta</strong>
+          <small>Triagem separada por tipo, data, score, cidade e decisao de investimento.</small>
+        </div>
+      </section>
+
       <header class="hero">
         <div class="hero-copy">
           <p class="eyebrow">Supermercado Indio | Dashboard online</p>
@@ -68,6 +90,23 @@
           <p class="hero-text">
             Painel externo com separacao operacional entre oportunidades de leilao e compras normais, com foco em filtragem, prioridade e atualizacao.
           </p>
+          <div class="hero-pill-row">
+            <span class="hero-pill">Filtro por data de leilao</span>
+            <span class="hero-pill">Governanca de acesso</span>
+            <span class="hero-pill">Base online centralizada</span>
+          </div>
+          <div class="hero-story">
+            <div class="hero-story-card">
+              <span class="status-label">Leitura</span>
+              <strong>Onde esta o ataque</strong>
+              <p>O painel prioriza o que merece capital, energia comercial e acompanhamento mais forte.</p>
+            </div>
+            <div class="hero-story-card">
+              <span class="status-label">Governanca</span>
+              <strong>Quem entra e por que entra</strong>
+              <p>A fila administrativa reduz acesso solto e melhora rastreabilidade de cadastro e decisao.</p>
+            </div>
+          </div>
         </div>
 
         <div class="hero-side">
@@ -92,8 +131,26 @@
         </div>
       </header>
 
+      <section class="executive-lane">
+        <article class="lane-card lane-card-accent">
+          <span class="status-label">Foco 1</span>
+          <strong>Oportunidades de ataque</strong>
+          <p>Leitura priorizada por score, desconto, timing e aderencia geografica.</p>
+        </article>
+        <article class="lane-card">
+          <span class="status-label">Foco 2</span>
+          <strong>Governanca de acesso</strong>
+          <p>Solicitacoes com CPF e documento obrigatorio antes de qualquer liberacao.</p>
+        </article>
+        <article class="lane-card">
+          <span class="status-label">Foco 3</span>
+          <strong>Atualizacao recorrente</strong>
+          <p>Fluxo sincronizado entre coleta, inteligencia, dashboard e publicacao online.</p>
+        </article>
+      </section>
+
       <main class="grid">
-        <section class="panel panel-wide">
+        <section class="panel panel-wide panel-feature">
           <div class="panel-header">
             <div>
               <p class="panel-kicker">Resumo executivo</p>
@@ -104,7 +161,7 @@
           <div id="kpi-grid" class="kpi-grid"></div>
         </section>
 
-        <section class="panel panel-wide">
+        <section class="panel panel-wide panel-soft">
           <div class="panel-header">
             <div>
               <p class="panel-kicker">Filtros operacionais</p>
@@ -132,7 +189,7 @@
           </div>
         </section>
 
-        <section class="panel">
+        <section class="panel panel-premium">
           <div class="panel-header">
             <div>
               <p class="panel-kicker">Segmentacao</p>
@@ -142,7 +199,7 @@
           <div id="opportunity-type-list" class="metric-list"></div>
         </section>
 
-        <section class="panel">
+        <section class="panel panel-premium">
           <div class="panel-header">
             <div>
               <p class="panel-kicker">Data de leilao</p>
@@ -152,7 +209,7 @@
           <div id="auction-timing-list" class="metric-list"></div>
         </section>
 
-        <section class="panel">
+        <section class="panel panel-premium">
           <div class="panel-header">
             <div>
               <p class="panel-kicker">Cidades</p>
@@ -162,7 +219,7 @@
           <div id="radar-cities" class="tag-cloud"></div>
         </section>
 
-        <section class="panel">
+        <section class="panel panel-premium">
           <div class="panel-header">
             <div>
               <p class="panel-kicker">Distribuicao</p>
@@ -172,7 +229,7 @@
           <div id="decision-list" class="metric-list"></div>
         </section>
 
-        <section class="panel">
+        <section class="panel panel-premium">
           <div class="panel-header">
             <div>
               <p class="panel-kicker">Distribuicao</p>
@@ -182,7 +239,7 @@
           <div id="investment-list" class="metric-list"></div>
         </section>
 
-        <section class="panel">
+        <section class="panel panel-premium">
           <div class="panel-header">
             <div>
               <p class="panel-kicker">Movimento semanal</p>
@@ -192,7 +249,7 @@
           <div id="weekly-summary" class="metric-list"></div>
         </section>
 
-        <section id="admin-panel" class="panel panel-wide hidden">
+        <section id="admin-panel" class="panel panel-wide panel-admin hidden">
           <div class="panel-header">
             <div>
               <p class="panel-kicker">Governanca de acesso</p>
@@ -230,7 +287,7 @@
           </div>
         </section>
 
-        <section class="panel panel-wide">
+        <section class="panel panel-wide panel-feature">
           <div class="panel-header">
             <div>
               <p class="panel-kicker">Top oportunidades</p>

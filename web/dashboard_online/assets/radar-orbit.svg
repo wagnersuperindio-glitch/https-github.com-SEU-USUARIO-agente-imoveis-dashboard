@@ -1,0 +1,15 @@
+<svg width="720" height="720" viewBox="0 0 720 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="720" height="720" fill="transparent"/>
+  <circle cx="360" cy="360" r="280" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+  <circle cx="360" cy="360" r="212" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+  <circle cx="360" cy="360" r="144" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+  <circle cx="360" cy="360" r="76" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+  <path d="M120 360H600" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+  <path d="M360 120V600" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+  <path d="M191 191L529 529" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <path d="M191 529L529 191" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+  <circle cx="360" cy="360" r="8" fill="#FFD695"/>
+  <circle cx="505" cy="270" r="10" fill="#F4E7CF"/>
+  <circle cx="245" cy="468" r="8" fill="#D6B06A"/>
+  <circle cx="288" cy="215" r="6" fill="#F4E7CF"/>
+</svg>
