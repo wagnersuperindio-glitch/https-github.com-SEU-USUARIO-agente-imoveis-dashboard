@@ -18,6 +18,8 @@ create table if not exists public.dashboard_access_requests (
 alter table public.dashboard_access_requests enable row level security;
 
 drop policy if exists "dashboard_access_requests_insert_open" on public.dashboard_access_requests;
+drop policy if exists "dashboard_access_requests_select_admin" on public.dashboard_access_requests;
+drop policy if exists "dashboard_access_requests_update_admin" on public.dashboard_access_requests;
 
 create policy "dashboard_access_requests_insert_open"
 on public.dashboard_access_requests
@@ -33,4 +35,23 @@ with check (
   and length(trim(phone)) > 0
   and length(trim(company_name)) > 0
   and length(trim(role_requested)) > 0
+);
+
+create policy "dashboard_access_requests_select_admin"
+on public.dashboard_access_requests
+for select
+to authenticated
+using (
+  coalesce(auth.jwt() -> 'user_metadata' ->> 'role', '') in ('admin', 'diretoria')
+);
+
+create policy "dashboard_access_requests_update_admin"
+on public.dashboard_access_requests
+for update
+to authenticated
+using (
+  coalesce(auth.jwt() -> 'user_metadata' ->> 'role', '') in ('admin', 'diretoria')
+)
+with check (
+  coalesce(auth.jwt() -> 'user_metadata' ->> 'role', '') in ('admin', 'diretoria')
 );

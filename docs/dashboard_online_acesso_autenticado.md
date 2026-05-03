@@ -5,6 +5,7 @@
 - tela de login no dashboard online externo;
 - bloqueio de autoinscricao publica;
 - solicitacao de acesso controlada pelo proprio painel;
+- painel admin no web app para revisar a fila de solicitacoes;
 - troca de senha pelo proprio painel;
 - script para criar ou redefinir o usuario inicial no Supabase;
 - script para aprovar ou recusar solicitacoes de acesso;
@@ -60,6 +61,18 @@ Se voce nao informar `--password`, o script usa a senha inicial padrao:
 ```powershell
 python .\scripts\aprovar_solicitacao_dashboard_online.py --request-id 1 --reject --reviewed-by wagner.admin --reason "Acesso nao autorizado"
 ```
+
+## O que o painel admin web faz
+
+- lista solicitacoes pendentes, aprovadas e recusadas;
+- filtra por status, nome, e-mail, CPF e empresa;
+- permite aprovar ou recusar a solicitacao na propria interface;
+- gera o comando de provisionamento para criacao do usuario final no Auth.
+
+## Limite atual da web
+
+O dashboard web ja faz a governanca da fila, mas a criacao do usuario final no Supabase Auth ainda depende de backend privilegiado.
+Por isso, a interface copia o comando de provisionamento e o script local faz a liberacao final com seguranca.
 
 ## Observacao executiva
 

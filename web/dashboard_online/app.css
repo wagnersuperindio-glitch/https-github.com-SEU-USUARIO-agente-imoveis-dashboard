@@ -119,6 +119,81 @@ body {
   color: #f9b6a8;
 }
 
+.admin-status {
+  margin: 0 0 16px;
+  color: var(--muted);
+}
+
+.admin-filter-grid {
+  margin-bottom: 16px;
+}
+
+.admin-table-shell {
+  margin-top: 14px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.status-pill.pendente {
+  background: var(--gold-soft);
+  color: #8a6117;
+}
+
+.status-pill.aprovado {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.status-pill.recusado {
+  background: var(--alert-soft);
+  color: var(--alert);
+}
+
+.request-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-action-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-action-button.approve {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.admin-action-button.reject {
+  background: var(--alert-soft);
+  color: var(--alert);
+}
+
+.admin-action-button.copy {
+  background: var(--info-soft);
+  color: var(--info);
+}
+
 .refresh-button:disabled {
   cursor: not-allowed;
   opacity: 0.6;

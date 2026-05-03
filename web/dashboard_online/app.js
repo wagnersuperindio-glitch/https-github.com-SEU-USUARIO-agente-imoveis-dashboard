@@ -4,6 +4,7 @@ const accessRequestsTable = config.accessRequestsTable || "dashboard_access_requ
 
 let allOpportunities = [];
 let currentSession = null;
+let accessRequests = [];
 
 const authGate = document.getElementById("auth-gate");
 const loginPanel = document.getElementById("login-panel");
@@ -14,6 +15,8 @@ const currentUserEl = document.getElementById("current-user");
 const sessionStatusEl = document.getElementById("session-status");
 const logoutButton = document.getElementById("logout-button");
 const refreshButton = document.getElementById("refresh-button");
+const adminPanel = document.getElementById("admin-panel");
+const adminStatus = document.getElementById("admin-status");
 
 const formatNumber = (value) =>
   new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 }).format(value ?? 0);
@@ -59,6 +62,14 @@ function setAuthStatus(message, tone = "neutral") {
 
 function digitsOnly(value) {
   return (value || "").replace(/\D/g, "");
+}
+
+function userRole() {
+  return currentSession?.user?.user_metadata?.role || "";
+}
+
+function isAdminSession() {
+  return ["admin", "diretoria"].includes(userRole());
 }
 
 function setSession(session) {
@@ -113,6 +124,7 @@ function refreshSessionUi() {
   logoutButton.classList.toggle("hidden", !currentSession);
   authGate.classList.toggle("hidden", Boolean(currentSession));
   refreshButton.disabled = !currentSession;
+  adminPanel.classList.toggle("hidden", !currentSession || !isAdminSession());
 }
 
 async function authRequest(path, method, body, accessToken = "") {
@@ -156,6 +168,53 @@ async function restInsert(table, payload) {
   return data;
 }
 
+async function restSelect(table, query) {
+  if (!currentSession?.access_token) {
+    throw new Error("Sessao necessaria para consultar dados administrativos.");
+  }
+
+  const response = await fetch(`${config.projectUrl}/rest/v1/${table}${query}`, {
+    method: "GET",
+    headers: {
+      apikey: config.anonKey,
+      Authorization: `Bearer ${currentSession.access_token}`,
+      Accept: "application/json",
+    },
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const message = data.message || data.error_description || data.error || `Falha ${response.status}`;
+    throw new Error(message);
+  }
+  return data;
+}
+
+async function restPatch(table, query, payload) {
+  if (!currentSession?.access_token) {
+    throw new Error("Sessao necessaria para atualizar dados administrativos.");
+  }
+
+  const response = await fetch(`${config.projectUrl}/rest/v1/${table}${query}`, {
+    method: "PATCH",
+    headers: {
+      apikey: config.anonKey,
+      Authorization: `Bearer ${currentSession.access_token}`,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const message = data.message || data.error_description || data.error || `Falha ${response.status}`;
+    throw new Error(message);
+  }
+  return data;
+}
+
 async function login() {
   const email = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value.trim();
@@ -178,6 +237,9 @@ async function login() {
   });
   setAuthStatus("Acesso liberado com sucesso.", "success");
   await loadOnlineDashboard();
+  await loadAccessRequests().catch((error) => {
+    adminStatus.textContent = error.message;
+  });
 }
 
 function buildAccessRequestPayload() {
@@ -256,6 +318,113 @@ async function changePassword() {
   setAuthStatus("Atualizando senha do usuario atual...", "neutral");
   await authRequest("/auth/v1/user", "PUT", { password: newPassword }, currentSession.access_token);
   setAuthStatus("Senha atualizada com sucesso.", "success");
+}
+
+async function loadAccessRequests() {
+  if (!isAdminSession()) {
+    return;
+  }
+
+  adminStatus.textContent = "Carregando fila administrativa...";
+  accessRequests = await restSelect(
+    accessRequestsTable,
+    "?select=id,created_at,reviewed_at,reviewed_by,status,full_name,email,cpf,document_type,document_number,phone,company_name,role_requested,justification&order=created_at.desc",
+  );
+  adminStatus.textContent =
+    "Fila carregada. Aprovacao web altera o status da solicitacao; o provisionamento do usuario no Auth continua controlado via script administrativo.";
+  applyRequestFilters();
+}
+
+function renderAccessRequests(items) {
+  document.getElementById("requests-body").innerHTML = items
+    .map((item) => {
+      const cpfMasked =
+        item.cpf && item.cpf.length === 11
+          ? `${item.cpf.slice(0, 3)}.${item.cpf.slice(3, 6)}.${item.cpf.slice(6, 9)}-${item.cpf.slice(9)}`
+          : item.cpf || "-";
+      const canReview = item.status === "pendente";
+      const copyCommand = `python .\\scripts\\aprovar_solicitacao_dashboard_online.py --request-id ${item.id} --approve --reviewed-by ${currentSession?.user?.email || "admin"}`;
+      return `
+        <tr>
+          <td><span class="status-pill ${item.status}">${item.status}</span></td>
+          <td>
+            <strong>${item.full_name || "-"}</strong>
+            <div class="request-meta">
+              <span>${item.email || "-"}</span>
+              <span>${item.phone || "-"}</span>
+            </div>
+          </td>
+          <td>
+            <div class="request-meta">
+              <span>CPF: ${cpfMasked}</span>
+              <span>${item.document_type || "-"}: ${item.document_number || "-"}</span>
+            </div>
+          </td>
+          <td>
+            <div class="request-meta">
+              <span>${item.company_name || "-"}</span>
+              <span>Perfil: ${item.role_requested || "-"}</span>
+            </div>
+          </td>
+          <td>${item.justification || "-"}</td>
+          <td>
+            <div class="request-meta">
+              <span>Solicitado: ${formatDateTime(item.created_at)}</span>
+              <span>Revisado: ${formatDateTime(item.reviewed_at)}</span>
+              <span>Por: ${item.reviewed_by || "-"}</span>
+            </div>
+          </td>
+          <td>
+            <div class="admin-actions">
+              ${
+                canReview
+                  ? `
+                <button class="admin-action-button approve" data-request-action="approve" data-request-id="${item.id}">Aprovar</button>
+                <button class="admin-action-button reject" data-request-action="reject" data-request-id="${item.id}">Recusar</button>
+              `
+                  : ""
+              }
+              <button class="admin-action-button copy" data-request-action="copy" data-request-id="${item.id}" data-command="${encodeURIComponent(copyCommand)}">Copiar comando</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    })
+    .join("");
+}
+
+function applyRequestFilters() {
+  const status = document.getElementById("request-status-filter").value;
+  const search = document.getElementById("request-search-input").value.trim().toLowerCase();
+
+  const filtered = accessRequests.filter((item) => {
+    const haystack = `${item.full_name || ""} ${item.email || ""} ${item.cpf || ""} ${item.company_name || ""}`.toLowerCase();
+    if (status && item.status !== status) return false;
+    if (search && !haystack.includes(search)) return false;
+    return true;
+  });
+
+  renderAccessRequests(filtered);
+}
+
+async function reviewAccessRequest(requestId, nextStatus) {
+  if (!isAdminSession()) {
+    throw new Error("Apenas usuarios admin ou diretoria podem revisar solicitacoes.");
+  }
+  const reviewedBy = currentSession?.user?.email || currentSession?.user?.user_metadata?.display_name || "admin";
+  const payload = {
+    status: nextStatus,
+    reviewed_by: reviewedBy,
+    reviewed_at: new Date().toISOString(),
+  };
+  await restPatch(accessRequestsTable, `?id=eq.${requestId}`, payload);
+  await loadAccessRequests();
+}
+
+async function copyProvisionCommand(encodedCommand) {
+  const command = decodeURIComponent(encodedCommand);
+  await navigator.clipboard.writeText(command);
+  adminStatus.textContent = "Comando de provisionamento copiado. Use-o na maquina de operacao para criar o usuario final no Auth.";
 }
 
 function logout() {
@@ -493,6 +662,11 @@ document.getElementById("password-button").addEventListener("click", () => {
   changePassword().catch((error) => setAuthStatus(error.message, "error"));
 });
 logoutButton.addEventListener("click", logout);
+document.getElementById("refresh-requests-button").addEventListener("click", () => {
+  loadAccessRequests().catch((error) => {
+    adminStatus.textContent = error.message;
+  });
+});
 
 refreshButton.addEventListener("click", () => {
   loadOnlineDashboard().catch((error) => {
@@ -503,6 +677,36 @@ refreshButton.addEventListener("click", () => {
 ["search-input", "opportunity-type-filter", "auction-timing-filter", "decision-filter", "investment-filter", "city-filter"].forEach((id) => {
   document.getElementById(id).addEventListener("input", applyFilters);
   document.getElementById(id).addEventListener("change", applyFilters);
+});
+
+["request-status-filter", "request-search-input"].forEach((id) => {
+  document.getElementById(id).addEventListener("input", applyRequestFilters);
+  document.getElementById(id).addEventListener("change", applyRequestFilters);
+});
+
+document.getElementById("requests-body").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-request-action]");
+  if (!button) return;
+
+  const action = button.dataset.requestAction;
+  const requestId = button.dataset.requestId;
+  if (action === "approve") {
+    reviewAccessRequest(requestId, "aprovado").catch((error) => {
+      adminStatus.textContent = error.message;
+    });
+    return;
+  }
+  if (action === "reject") {
+    reviewAccessRequest(requestId, "recusado").catch((error) => {
+      adminStatus.textContent = error.message;
+    });
+    return;
+  }
+  if (action === "copy") {
+    copyProvisionCommand(button.dataset.command || "").catch((error) => {
+      adminStatus.textContent = error.message;
+    });
+  }
 });
 
 setSession(readStoredSession());
@@ -517,5 +721,8 @@ setAuthStatus(
 if (currentSession) {
   loadOnlineDashboard().catch((error) => {
     document.getElementById("status-line").textContent = error.message;
+  });
+  loadAccessRequests().catch((error) => {
+    adminStatus.textContent = error.message;
   });
 }

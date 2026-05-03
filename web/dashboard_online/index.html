@@ -192,6 +192,44 @@
           <div id="weekly-summary" class="metric-list"></div>
         </section>
 
+        <section id="admin-panel" class="panel panel-wide hidden">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Governanca de acesso</p>
+              <h2>Fila administrativa do dashboard</h2>
+            </div>
+            <button id="refresh-requests-button" class="refresh-button">Atualizar fila</button>
+          </div>
+          <p id="admin-status" class="admin-status">
+            Apenas perfis autorizados podem revisar, aprovar ou recusar solicitacoes.
+          </p>
+          <div class="filter-grid admin-filter-grid">
+            <select id="request-status-filter" class="filter-input">
+              <option value="">Todos os status</option>
+              <option value="pendente">Pendente</option>
+              <option value="aprovado">Aprovado</option>
+              <option value="recusado">Recusado</option>
+            </select>
+            <input id="request-search-input" class="filter-input" type="text" placeholder="Buscar por nome, e-mail, CPF ou empresa" />
+          </div>
+          <div class="table-shell admin-table-shell">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Solicitante</th>
+                  <th>Documento</th>
+                  <th>Empresa / perfil</th>
+                  <th>Justificativa</th>
+                  <th>Revisao</th>
+                  <th>Acoes</th>
+                </tr>
+              </thead>
+              <tbody id="requests-body"></tbody>
+            </table>
+          </div>
+        </section>
+
         <section class="panel panel-wide">
           <div class="panel-header">
             <div>
