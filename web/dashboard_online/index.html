@@ -166,6 +166,7 @@
             <div>
               <p class="panel-kicker">Filtros operacionais</p>
               <h2>Recortes do radar</h2>
+              <small id="filter-summary" class="panel-subtitle">Leitura padrao focada em leiloes imobiliarios nas cidades-alvo.</small>
             </div>
           </div>
 
@@ -175,7 +176,19 @@
               <option value="">Todos os tipos</option>
             </select>
             <select id="auction-timing-filter" class="filter-input">
-              <option value="">Todas as situacoes de data</option>
+              <option value="ativas_sem_data">Leiloes ativos ou sem data</option>
+            </select>
+            <select id="radar-scope-filter" class="filter-input">
+              <option value="cidades_alvo">Somente cidades-alvo</option>
+            </select>
+            <select id="asset-family-filter" class="filter-input">
+              <option value="">Todos os tipos de imovel</option>
+            </select>
+            <select id="source-group-filter" class="filter-input">
+              <option value="">Todos os grupos de fonte</option>
+            </select>
+            <select id="source-name-filter" class="filter-input">
+              <option value="">Todas as fontes</option>
             </select>
             <select id="decision-filter" class="filter-input">
               <option value="">Todas as decisoes operacionais</option>
@@ -186,6 +199,13 @@
             <select id="city-filter" class="filter-input">
               <option value="">Todas as cidades</option>
             </select>
+          </div>
+
+          <div class="preset-row">
+            <button id="preset-radar-auctions" class="preset-button preset-button-active">Leiloes no radar</button>
+            <button id="preset-radar-all" class="preset-button">Todos os imoveis no radar</button>
+            <button id="preset-banks" class="preset-button">Bancos e leiloeiros</button>
+            <button id="preset-wide" class="preset-button">Base ampla</button>
           </div>
         </section>
 

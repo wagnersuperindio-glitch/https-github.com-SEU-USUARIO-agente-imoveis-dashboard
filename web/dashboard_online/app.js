@@ -5,6 +5,7 @@ const accessRequestsTable = config.accessRequestsTable || "dashboard_access_requ
 let allOpportunities = [];
 let currentSession = null;
 let accessRequests = [];
+let currentPreset = "radar-auctions";
 
 const authGate = document.getElementById("auth-gate");
 const loginPanel = document.getElementById("login-panel");
@@ -62,6 +63,45 @@ function setAuthStatus(message, tone = "neutral") {
 
 function digitsOnly(value) {
   return (value || "").replace(/\D/g, "");
+}
+
+function normalizeText(value) {
+  return (value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function classifyAssetFamily(item) {
+  const text = normalizeText(`${item.asset_type || ""} ${item.title || ""}`);
+  if (text.includes("terreno") || text.includes("lote") || text.includes("gleba")) return "Terreno";
+  if (text.includes("apartamento") || text.includes("cobertura") || text.includes("studio") || text.includes("kitnet")) return "Apartamento";
+  if (text.includes("casa") || text.includes("sobrado") || text.includes("condominio")) return "Casa";
+  if (text.includes("predio") || text.includes("comercial") || text.includes("loja") || text.includes("sala")) return "Comercial";
+  if (text.includes("galp") || text.includes("industrial") || text.includes("logistica")) return "Galpao";
+  if (text.includes("sitio") || text.includes("chacara") || text.includes("fazenda") || text.includes("rural")) return "Rural";
+  return "Outros";
+}
+
+function classifySourceGroup(item) {
+  const text = normalizeText(`${item.source_name || ""} ${item.category || ""}`);
+  if (["caixa", "bb", "banrisul", "santander", "sicredi", "bradesco", "itau"].some((term) => text.includes(term))) return "Bancos";
+  if (["leil", "moraes", "zago", "mega"].some((term) => text.includes(term))) return "Leiloeiros";
+  if (["gov", "federal", "estado", "prefeitura", "tribunal", "receita", "spu", "inss"].some((term) => text.includes(term))) return "Governo";
+  if (["olx", "zap", "marketplace", "portal"].some((term) => text.includes(term))) return "Portais e marketplaces";
+  if (["imobiliaria", "imoveis"].some((term) => text.includes(term))) return "Imobiliarias";
+  return "Outras fontes";
+}
+
+function classifyCityScope(item) {
+  if (item.radar_match) return "Cidades-alvo";
+  if (item.state === "RS") return "RS fora do radar";
+  return "Fora do RS";
+}
+
+function isRealEstateRelevant(item, family, sourceGroup) {
+  if (family !== "Outros") return true;
+  return ["Bancos", "Leiloeiros", "Imobiliarias", "Governo"].includes(sourceGroup);
 }
 
 function userRole() {
@@ -326,16 +366,41 @@ async function loadAccessRequests() {
   }
 
   adminStatus.textContent = "Carregando fila administrativa...";
-  accessRequests = await restSelect(
-    accessRequestsTable,
-    "?select=id,created_at,reviewed_at,reviewed_by,status,full_name,email,cpf,document_type,document_number,phone,company_name,role_requested,justification&order=created_at.desc",
-  );
+  try {
+    accessRequests = await restSelect(
+      accessRequestsTable,
+      "?select=id,created_at,reviewed_at,reviewed_by,status,full_name,email,cpf,document_type,document_number,phone,company_name,role_requested,justification&order=created_at.desc",
+    );
+  } catch (error) {
+    if ((error.message || "").includes("dashboard_access_requests")) {
+      adminStatus.textContent =
+        "A fila administrativa ainda nao existe no Supabase. Rode o SQL sql/supabase_dashboard_access_requests.sql no SQL Editor para ativar esse bloco.";
+      accessRequests = [];
+      renderAccessRequests([]);
+      return;
+    }
+    throw error;
+  }
   adminStatus.textContent =
     "Fila carregada. Aprovacao web altera o status da solicitacao; o provisionamento do usuario no Auth continua controlado via script administrativo.";
   applyRequestFilters();
 }
 
 function renderAccessRequests(items) {
+  if (!items.length) {
+    document.getElementById("requests-body").innerHTML = `
+      <tr>
+        <td colspan="7">
+          <div class="request-meta">
+            <strong>Nenhuma solicitacao encontrada.</strong>
+            <span>Se a fila ainda nao existir, ative a tabela no Supabase. Se existir, ainda nao ha pedidos cadastrados neste ambiente.</span>
+          </div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
   document.getElementById("requests-body").innerHTML = items
     .map((item) => {
       const cpfMasked =
@@ -452,11 +517,20 @@ function classifyOpportunity(item) {
     auctionTiming = "Sem Data";
   }
 
+  const assetFamily = classifyAssetFamily(item);
+  const sourceGroup = classifySourceGroup(item);
+  const cityScope = classifyCityScope(item);
+  const realEstateRelevant = isRealEstateRelevant(item, assetFamily, sourceGroup);
+
   return {
     ...item,
     opportunity_type: isAuction ? "Leilao" : "Compra Direta",
     auction_timing: auctionTiming,
     event_date_label: hasValidDate ? formatDateOnly(item.event_date) : "Sem data",
+    asset_family: assetFamily,
+    source_group: sourceGroup,
+    city_scope: cityScope,
+    is_real_estate_relevant: realEstateRelevant,
   };
 }
 
@@ -568,6 +642,10 @@ function renderOpportunities(items) {
 function populateFilters(items) {
   const types = [...new Set(items.map((item) => item.opportunity_type))].sort();
   const auctionTimings = [...new Set(items.map((item) => item.auction_timing).filter(Boolean))].sort();
+  const cityScopes = [...new Set(items.map((item) => item.city_scope).filter(Boolean))].sort();
+  const assetFamilies = [...new Set(items.map((item) => item.asset_family).filter(Boolean))].sort();
+  const sourceGroups = [...new Set(items.map((item) => item.source_group).filter(Boolean))].sort();
+  const sourceNames = [...new Set(items.map((item) => item.source_name).filter(Boolean))].sort();
   const decisions = [...new Set(items.map((item) => item.decision).filter(Boolean))].sort();
   const investmentDecisions = [...new Set(items.map((item) => item.investment_decision).filter(Boolean))].sort();
   const cities = [...new Set(items.map((item) => item.city).filter(Boolean))].sort();
@@ -579,7 +657,17 @@ function populateFilters(items) {
   };
 
   populate("opportunity-type-filter", types, "Todos os tipos");
-  populate("auction-timing-filter", auctionTimings, "Todas as situacoes de data");
+  document.getElementById("auction-timing-filter").innerHTML =
+    `<option value="ativas_sem_data">Leiloes ativos ou sem data</option>` +
+    `<option value="">Todas as situacoes de data</option>` +
+    auctionTimings.map((value) => `<option value="${value}">${value}</option>`).join("");
+  document.getElementById("radar-scope-filter").innerHTML =
+    `<option value="cidades_alvo">Somente cidades-alvo</option>` +
+    `<option value="">Todas as geografias</option>` +
+    cityScopes.map((value) => `<option value="${value}">${value}</option>`).join("");
+  populate("asset-family-filter", assetFamilies, "Todos os tipos de imovel");
+  populate("source-group-filter", sourceGroups, "Todos os grupos de fonte");
+  populate("source-name-filter", sourceNames, "Todas as fontes");
   populate("decision-filter", decisions, "Todas as decisoes operacionais");
   populate("investment-filter", investmentDecisions, "Todas as decisoes de investimento");
   populate("city-filter", cities, "Todas as cidades");
@@ -589,16 +677,28 @@ function applyFilters() {
   const search = document.getElementById("search-input").value.trim().toLowerCase();
   const type = document.getElementById("opportunity-type-filter").value;
   const auctionTiming = document.getElementById("auction-timing-filter").value;
+  const radarScope = document.getElementById("radar-scope-filter").value;
+  const assetFamily = document.getElementById("asset-family-filter").value;
+  const sourceGroup = document.getElementById("source-group-filter").value;
+  const sourceName = document.getElementById("source-name-filter").value;
   const decision = document.getElementById("decision-filter").value;
   const investmentDecision = document.getElementById("investment-filter").value;
   const city = document.getElementById("city-filter").value;
 
   const filtered = allOpportunities.filter((item) => {
+    if (!item.is_real_estate_relevant) return false;
     const haystack =
       `${item.title || ""} ${item.city || ""} ${item.state || ""} ${item.source_name || ""} ${item.event_stage || ""}`.toLowerCase();
     if (search && !haystack.includes(search)) return false;
     if (type && item.opportunity_type !== type) return false;
-    if (auctionTiming && item.auction_timing !== auctionTiming) return false;
+    if (auctionTiming === "ativas_sem_data" && item.opportunity_type === "Leilao" && item.auction_timing === "Data Passada") return false;
+    if (auctionTiming && auctionTiming !== "ativas_sem_data" && item.auction_timing !== auctionTiming) return false;
+    if (radarScope === "cidades_alvo" && !item.radar_match) return false;
+    if (radarScope && radarScope !== "cidades_alvo" && item.city_scope !== radarScope) return false;
+    if (assetFamily && item.asset_family !== assetFamily) return false;
+    if (sourceGroup && item.source_group !== sourceGroup) return false;
+    if (currentPreset === "banks" && !["Bancos", "Leiloeiros", "Governo"].includes(item.source_group)) return false;
+    if (sourceName && item.source_name !== sourceName) return false;
     if (decision && item.decision !== decision) return false;
     if (investmentDecision && item.investment_decision !== investmentDecision) return false;
     if (city && item.city !== city) return false;
@@ -606,6 +706,14 @@ function applyFilters() {
   });
 
   renderOpportunities(filtered.slice(0, 40));
+  const presetLabels = {
+    "radar-auctions": "Preset ativo: leiloes nas cidades-alvo.",
+    "radar-all": "Preset ativo: todos os imoveis nas cidades-alvo.",
+    "banks": "Preset ativo: bancos, leiloeiros e fontes governamentais.",
+    "wide": "Preset ativo: base ampla curada.",
+  };
+  document.getElementById("filter-summary").textContent =
+    `${filtered.length} oportunidades apos filtros. ${presetLabels[currentPreset] || ""} Visao focada em ativos imobiliarios validos, com priorizacao do radar e das fontes relevantes.`;
 }
 
 function buildCountList(items, key) {
@@ -617,6 +725,67 @@ function buildCountList(items, key) {
   return [...counts.entries()]
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .map(([label, value]) => ({ label, value }));
+}
+
+function setPresetButton(activeId) {
+  ["preset-radar-auctions", "preset-radar-all", "preset-banks", "preset-wide"].forEach((id) => {
+    document.getElementById(id).classList.toggle("preset-button-active", id === activeId);
+  });
+}
+
+function applyPreset(name) {
+  currentPreset = name;
+  const setValue = (id, value) => {
+    document.getElementById(id).value = value;
+  };
+
+  if (name === "radar-auctions") {
+    setValue("opportunity-type-filter", "Leilao");
+    setValue("auction-timing-filter", "ativas_sem_data");
+    setValue("radar-scope-filter", "cidades_alvo");
+    setValue("asset-family-filter", "");
+    setValue("source-group-filter", "");
+    setValue("source-name-filter", "");
+    setValue("decision-filter", "");
+    setValue("investment-filter", "");
+    setValue("city-filter", "");
+    setPresetButton("preset-radar-auctions");
+  } else if (name === "radar-all") {
+    setValue("opportunity-type-filter", "");
+    setValue("auction-timing-filter", "");
+    setValue("radar-scope-filter", "cidades_alvo");
+    setValue("asset-family-filter", "");
+    setValue("source-group-filter", "");
+    setValue("source-name-filter", "");
+    setValue("decision-filter", "");
+    setValue("investment-filter", "");
+    setValue("city-filter", "");
+    setPresetButton("preset-radar-all");
+  } else if (name === "banks") {
+    setValue("opportunity-type-filter", "Leilao");
+    setValue("auction-timing-filter", "ativas_sem_data");
+    setValue("radar-scope-filter", "");
+    setValue("asset-family-filter", "");
+    setValue("source-group-filter", "");
+    setValue("source-name-filter", "");
+    setValue("decision-filter", "");
+    setValue("investment-filter", "");
+    setValue("city-filter", "");
+    setPresetButton("preset-banks");
+  } else if (name === "wide") {
+    setValue("opportunity-type-filter", "");
+    setValue("auction-timing-filter", "");
+    setValue("radar-scope-filter", "");
+    setValue("asset-family-filter", "");
+    setValue("source-group-filter", "");
+    setValue("source-name-filter", "");
+    setValue("decision-filter", "");
+    setValue("investment-filter", "");
+    setValue("city-filter", "");
+    setPresetButton("preset-wide");
+  }
+
+  applyFilters();
 }
 
 async function loadOnlineDashboard() {
@@ -646,7 +815,7 @@ async function loadOnlineDashboard() {
 
   allOpportunities = enriched;
   populateFilters(allOpportunities);
-  applyFilters();
+  applyPreset("radar-auctions");
 }
 
 document.getElementById("login-tab").addEventListener("click", () => showAuthPanel("login"));
@@ -674,10 +843,26 @@ refreshButton.addEventListener("click", () => {
   });
 });
 
-["search-input", "opportunity-type-filter", "auction-timing-filter", "decision-filter", "investment-filter", "city-filter"].forEach((id) => {
+[
+  "search-input",
+  "opportunity-type-filter",
+  "auction-timing-filter",
+  "radar-scope-filter",
+  "asset-family-filter",
+  "source-group-filter",
+  "source-name-filter",
+  "decision-filter",
+  "investment-filter",
+  "city-filter",
+].forEach((id) => {
   document.getElementById(id).addEventListener("input", applyFilters);
   document.getElementById(id).addEventListener("change", applyFilters);
 });
+
+document.getElementById("preset-radar-auctions").addEventListener("click", () => applyPreset("radar-auctions"));
+document.getElementById("preset-radar-all").addEventListener("click", () => applyPreset("radar-all"));
+document.getElementById("preset-banks").addEventListener("click", () => applyPreset("banks"));
+document.getElementById("preset-wide").addEventListener("click", () => applyPreset("wide"));
 
 ["request-status-filter", "request-search-input"].forEach((id) => {
   document.getElementById(id).addEventListener("input", applyRequestFilters);
@@ -717,6 +902,7 @@ setAuthStatus(
     : "Autoinscricao bloqueada. Solicite acesso com CPF, documento e dados obrigatorios.",
   "neutral",
 );
+setPresetButton("preset-radar-auctions");
 
 if (currentSession) {
   loadOnlineDashboard().catch((error) => {
