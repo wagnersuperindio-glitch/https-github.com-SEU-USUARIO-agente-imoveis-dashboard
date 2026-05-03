@@ -1,11 +1,13 @@
 const config = window.SUPABASE_DASHBOARD_CONFIG || {};
 const sessionStorageKey = "agente-imoveis-dashboard-session";
+const accessRequestsTable = config.accessRequestsTable || "dashboard_access_requests";
+
 let allOpportunities = [];
 let currentSession = null;
 
 const authGate = document.getElementById("auth-gate");
 const loginPanel = document.getElementById("login-panel");
-const signupPanel = document.getElementById("signup-panel");
+const requestPanel = document.getElementById("request-panel");
 const passwordPanel = document.getElementById("password-panel");
 const authStatus = document.getElementById("auth-status");
 const currentUserEl = document.getElementById("current-user");
@@ -55,6 +57,10 @@ function setAuthStatus(message, tone = "neutral") {
   authStatus.dataset.tone = tone;
 }
 
+function digitsOnly(value) {
+  return (value || "").replace(/\D/g, "");
+}
+
 function setSession(session) {
   currentSession = session || null;
   if (session) {
@@ -77,13 +83,13 @@ function readStoredSession() {
 function showAuthPanel(target) {
   const panels = {
     login: loginPanel,
-    signup: signupPanel,
+    request: requestPanel,
     password: passwordPanel,
   };
 
   const tabs = {
     login: document.getElementById("login-tab"),
-    signup: document.getElementById("signup-tab"),
+    request: document.getElementById("request-tab"),
     password: document.getElementById("password-tab"),
   };
 
@@ -129,6 +135,27 @@ async function authRequest(path, method, body, accessToken = "") {
   return payload;
 }
 
+async function restInsert(table, payload) {
+  const response = await fetch(`${config.projectUrl}/rest/v1/${table}`, {
+    method: "POST",
+    headers: {
+      apikey: config.anonKey,
+      Authorization: `Bearer ${config.anonKey}`,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const message = data.message || data.error_description || data.error || `Falha ${response.status}`;
+    throw new Error(message);
+  }
+  return data;
+}
+
 async function login() {
   const email = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value.trim();
@@ -153,33 +180,64 @@ async function login() {
   await loadOnlineDashboard();
 }
 
-async function signUp() {
-  const email = document.getElementById("signup-email").value.trim();
-  const password = document.getElementById("signup-password").value.trim();
-  if (!email || !password) {
-    setAuthStatus("Preencha e-mail e senha para cadastrar o usuario.", "error");
-    return;
+function buildAccessRequestPayload() {
+  const fullName = document.getElementById("request-name").value.trim();
+  const email = document.getElementById("request-email").value.trim().toLowerCase();
+  const cpf = digitsOnly(document.getElementById("request-cpf").value);
+  const documentType = document.getElementById("request-document-type").value.trim();
+  const documentNumber = document.getElementById("request-document-number").value.trim();
+  const phone = document.getElementById("request-phone").value.trim();
+  const companyName = document.getElementById("request-company").value.trim();
+  const roleRequested = document.getElementById("request-role").value.trim();
+  const justification = document.getElementById("request-justification").value.trim();
+
+  if (!fullName || !email || !cpf || !documentType || !documentNumber || !phone || !companyName || !roleRequested) {
+    throw new Error("Preencha nome, e-mail, CPF, documento, telefone, empresa e perfil desejado.");
   }
 
-  setAuthStatus("Criando usuario no ambiente online...", "neutral");
-  const payload = await authRequest("/auth/v1/signup", "POST", {
+  if (cpf.length !== 11) {
+    throw new Error("CPF invalido. Informe os 11 digitos.");
+  }
+
+  return {
+    full_name: fullName,
     email,
-    password,
+    cpf,
+    document_type: documentType,
+    document_number: documentNumber,
+    phone,
+    company_name: companyName,
+    role_requested: roleRequested,
+    justification,
+    status: "pendente",
+  };
+}
+
+function clearAccessRequestForm() {
+  [
+    "request-name",
+    "request-email",
+    "request-cpf",
+    "request-document-type",
+    "request-document-number",
+    "request-phone",
+    "request-company",
+    "request-role",
+    "request-justification",
+  ].forEach((id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.value = "";
+    }
   });
+}
 
-  if (payload.access_token) {
-    setSession({
-      access_token: payload.access_token,
-      refresh_token: payload.refresh_token,
-      user: payload.user,
-      authenticated_at: new Date().toISOString(),
-    });
-    setAuthStatus("Usuario criado e autenticado.", "success");
-    await loadOnlineDashboard();
-    return;
-  }
-
-  setAuthStatus("Usuario criado. Se o Supabase exigir confirmacao, valide o e-mail antes de entrar.", "success");
+async function submitAccessRequest() {
+  const payload = buildAccessRequestPayload();
+  setAuthStatus("Enviando solicitacao para fila de aprovacao...", "neutral");
+  await restInsert(accessRequestsTable, payload);
+  setAuthStatus("Solicitacao enviada com sucesso. O acesso so sera liberado apos validacao administrativa.", "success");
+  clearAccessRequestForm();
 }
 
 async function changePassword() {
@@ -423,13 +481,13 @@ async function loadOnlineDashboard() {
 }
 
 document.getElementById("login-tab").addEventListener("click", () => showAuthPanel("login"));
-document.getElementById("signup-tab").addEventListener("click", () => showAuthPanel("signup"));
+document.getElementById("request-tab").addEventListener("click", () => showAuthPanel("request"));
 document.getElementById("password-tab").addEventListener("click", () => showAuthPanel("password"));
 document.getElementById("login-button").addEventListener("click", () => {
   login().catch((error) => setAuthStatus(error.message, "error"));
 });
-document.getElementById("signup-button").addEventListener("click", () => {
-  signUp().catch((error) => setAuthStatus(error.message, "error"));
+document.getElementById("request-button").addEventListener("click", () => {
+  submitAccessRequest().catch((error) => setAuthStatus(error.message, "error"));
 });
 document.getElementById("password-button").addEventListener("click", () => {
   changePassword().catch((error) => setAuthStatus(error.message, "error"));
@@ -449,7 +507,12 @@ refreshButton.addEventListener("click", () => {
 
 setSession(readStoredSession());
 showAuthPanel(currentSession ? "password" : "login");
-setAuthStatus(currentSession ? "Sessao recuperada. Atualize o painel se precisar." : "Aguardando login.", "neutral");
+setAuthStatus(
+  currentSession
+    ? "Sessao recuperada. Atualize o painel se precisar."
+    : "Autoinscricao bloqueada. Solicite acesso com CPF, documento e dados obrigatorios.",
+  "neutral",
+);
 
 if (currentSession) {
   loadOnlineDashboard().catch((error) => {

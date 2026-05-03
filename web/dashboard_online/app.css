@@ -88,6 +88,17 @@ body {
   gap: 12px;
 }
 
+.auth-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.auth-textarea {
+  min-height: 108px;
+  resize: vertical;
+}
+
 .auth-button,
 .secondary-button {
   width: fit-content;
@@ -424,7 +435,8 @@ a.record-link:hover {
   }
 
   .kpi-grid,
-  .filter-grid {
+  .filter-grid,
+  .auth-grid {
     grid-template-columns: 1fr;
   }
 }

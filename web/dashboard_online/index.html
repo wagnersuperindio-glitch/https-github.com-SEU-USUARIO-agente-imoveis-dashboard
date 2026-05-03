@@ -17,7 +17,7 @@
 
         <div class="auth-toggle-row">
           <button id="login-tab" class="auth-tab auth-tab-active">Entrar</button>
-          <button id="signup-tab" class="auth-tab">Cadastrar usuario</button>
+          <button id="request-tab" class="auth-tab">Solicitar acesso</button>
           <button id="password-tab" class="auth-tab">Trocar senha</button>
         </div>
 
@@ -27,11 +27,28 @@
           <button id="login-button" class="refresh-button auth-button">Entrar no painel</button>
         </div>
 
-        <div id="signup-panel" class="auth-panel hidden">
-          <input id="signup-email" class="filter-input" type="email" placeholder="E-mail do novo usuario" />
-          <input id="signup-password" class="filter-input" type="password" placeholder="Senha inicial do novo usuario" />
-          <small class="auth-note">Se a confirmacao por e-mail estiver ativa no Supabase, o novo usuario pode precisar confirmar o cadastro.</small>
-          <button id="signup-button" class="refresh-button auth-button">Cadastrar usuario</button>
+        <div id="request-panel" class="auth-panel hidden">
+          <input id="request-name" class="filter-input" type="text" placeholder="Nome completo" />
+          <input id="request-email" class="filter-input" type="email" placeholder="E-mail corporativo" />
+          <input id="request-cpf" class="filter-input" type="text" placeholder="CPF (somente numeros)" />
+          <div class="auth-grid">
+            <select id="request-document-type" class="filter-input">
+              <option value="">Tipo de documento adicional</option>
+              <option value="RG">RG</option>
+              <option value="CNH">CNH</option>
+              <option value="Passaporte">Passaporte</option>
+              <option value="Outro">Outro</option>
+            </select>
+            <input id="request-document-number" class="filter-input" type="text" placeholder="Numero do documento" />
+          </div>
+          <div class="auth-grid">
+            <input id="request-phone" class="filter-input" type="text" placeholder="Telefone / WhatsApp" />
+            <input id="request-company" class="filter-input" type="text" placeholder="Empresa / unidade" />
+          </div>
+          <input id="request-role" class="filter-input" type="text" placeholder="Perfil desejado: diretoria, expansao, consulta..." />
+          <textarea id="request-justification" class="filter-input auth-textarea" placeholder="Justificativa de acesso e area de atuacao"></textarea>
+          <small class="auth-note">Acesso controlado: a solicitacao so entra na fila se CPF, documento adicional e dados obrigatorios estiverem completos. O usuario so e liberado apos aprovacao administrativa.</small>
+          <button id="request-button" class="refresh-button auth-button">Enviar solicitacao</button>
         </div>
 
         <div id="password-panel" class="auth-panel hidden">

@@ -54,26 +54,70 @@ def find_user(base_url: str, service_role_key: str, email: str) -> dict | None:
         page += 1
 
 
-def create_user(base_url: str, service_role_key: str, email: str, password: str, display_name: str, role: str) -> dict:
+def build_user_metadata(
+    display_name: str,
+    role: str,
+    cpf: str = "",
+    document_type: str = "",
+    document_number: str = "",
+    phone: str = "",
+    company_name: str = "",
+) -> dict:
+    metadata = {
+        "display_name": display_name,
+        "role": role,
+    }
+    if cpf:
+        metadata["cpf"] = cpf
+    if document_type:
+        metadata["document_type"] = document_type
+    if document_number:
+        metadata["document_number"] = document_number
+    if phone:
+        metadata["phone"] = phone
+    if company_name:
+        metadata["company_name"] = company_name
+    return metadata
+
+
+def create_user(
+    base_url: str,
+    service_role_key: str,
+    email: str,
+    password: str,
+    display_name: str,
+    role: str,
+    cpf: str = "",
+    document_type: str = "",
+    document_number: str = "",
+    phone: str = "",
+    company_name: str = "",
+) -> dict:
     payload = {
         "email": email,
         "password": password,
         "email_confirm": True,
-        "user_metadata": {
-            "display_name": display_name,
-            "role": role,
-        },
+        "user_metadata": build_user_metadata(display_name, role, cpf, document_type, document_number, phone, company_name),
     }
     return _request(f"{base_url}/auth/v1/admin/users", "POST", service_role_key, payload) or {}
 
 
-def update_user(base_url: str, service_role_key: str, user_id: str, password: str, display_name: str, role: str) -> dict:
+def update_user(
+    base_url: str,
+    service_role_key: str,
+    user_id: str,
+    password: str,
+    display_name: str,
+    role: str,
+    cpf: str = "",
+    document_type: str = "",
+    document_number: str = "",
+    phone: str = "",
+    company_name: str = "",
+) -> dict:
     payload = {
         "password": password,
-        "user_metadata": {
-            "display_name": display_name,
-            "role": role,
-        },
+        "user_metadata": build_user_metadata(display_name, role, cpf, document_type, document_number, phone, company_name),
     }
     safe_user_id = urllib.parse.quote(user_id, safe="")
     return _request(f"{base_url}/auth/v1/admin/users/{safe_user_id}", "PUT", service_role_key, payload) or {}
@@ -85,6 +129,11 @@ def main() -> None:
     parser.add_argument("--password", default="Dash#SuperIndio2026!")
     parser.add_argument("--display-name", default="Wagner Admin")
     parser.add_argument("--role", default="admin")
+    parser.add_argument("--cpf", default="")
+    parser.add_argument("--document-type", default="")
+    parser.add_argument("--document-number", default="")
+    parser.add_argument("--phone", default="")
+    parser.add_argument("--company-name", default="")
     args = parser.parse_args()
 
     config = load_supabase_config()
@@ -94,10 +143,34 @@ def main() -> None:
     base_url = config.project_url.rstrip("/")
     user = find_user(base_url, config.service_role_key, args.email)
     if user:
-        result = update_user(base_url, config.service_role_key, user["id"], args.password, args.display_name, args.role)
+        result = update_user(
+            base_url,
+            config.service_role_key,
+            user["id"],
+            args.password,
+            args.display_name,
+            args.role,
+            args.cpf,
+            args.document_type,
+            args.document_number,
+            args.phone,
+            args.company_name,
+        )
         action = "atualizado"
     else:
-        result = create_user(base_url, config.service_role_key, args.email, args.password, args.display_name, args.role)
+        result = create_user(
+            base_url,
+            config.service_role_key,
+            args.email,
+            args.password,
+            args.display_name,
+            args.role,
+            args.cpf,
+            args.document_type,
+            args.document_number,
+            args.phone,
+            args.company_name,
+        )
         action = "criado"
 
     user_id = result.get("id") or (user.get("id") if user else None)
@@ -110,6 +183,7 @@ def main() -> None:
                 "email": args.email,
                 "password": args.password,
                 "user_id": user_id,
+                "cpf": args.cpf,
             },
             ensure_ascii=False,
             indent=2,

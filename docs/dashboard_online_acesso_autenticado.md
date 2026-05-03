@@ -3,10 +3,13 @@
 ## O que foi implantado
 
 - tela de login no dashboard online externo;
-- cadastro de novo usuario pelo proprio painel;
+- bloqueio de autoinscricao publica;
+- solicitacao de acesso controlada pelo proprio painel;
 - troca de senha pelo proprio painel;
 - script para criar ou redefinir o usuario inicial no Supabase;
+- script para aprovar ou recusar solicitacoes de acesso;
 - SQL de endurecimento para permitir leitura apenas por usuarios autenticados.
+- SQL de fila de solicitacoes de acesso com CPF e documento obrigatorios.
 
 ## Arquivos principais
 
@@ -14,7 +17,9 @@
 - `web/dashboard_online/app.css`
 - `web/dashboard_online/app.js`
 - `scripts/criar_usuario_dashboard_online.py`
+- `scripts/aprovar_solicitacao_dashboard_online.py`
 - `sql/supabase_dashboard_auth_lockdown.sql`
+- `sql/supabase_dashboard_access_requests.sql`
 
 ## Usuario inicial sugerido
 
@@ -25,13 +30,39 @@
 
 1. Abrir o `SQL Editor` do Supabase.
 2. Colar e rodar o conteudo de `sql/supabase_dashboard_auth_lockdown.sql`.
-3. Criar ou redefinir o usuario inicial com:
+3. Colar e rodar o conteudo de `sql/supabase_dashboard_access_requests.sql`.
+4. Criar ou redefinir o usuario inicial com:
 
 ```powershell
 python .\scripts\criar_usuario_dashboard_online.py
 ```
 
+## Como aprovar novos acessos
+
+1. Listar solicitacoes pendentes:
+
+```powershell
+python .\scripts\aprovar_solicitacao_dashboard_online.py --list-pending
+```
+
+2. Aprovar uma solicitacao:
+
+```powershell
+python .\scripts\aprovar_solicitacao_dashboard_online.py --request-id 1 --approve --reviewed-by wagner.admin
+```
+
+Se voce nao informar `--password`, o script usa a senha inicial padrao:
+
+- `Acesso#Dash_2026!`
+
+3. Recusar uma solicitacao:
+
+```powershell
+python .\scripts\aprovar_solicitacao_dashboard_online.py --request-id 1 --reject --reviewed-by wagner.admin --reason "Acesso nao autorizado"
+```
+
 ## Observacao executiva
 
 Sem o SQL de endurecimento, o login vira apenas uma camada visual.
-Com o SQL aplicado, o dashboard passa a exigir autenticacao real para leitura do snapshot.
+Sem a tabela de solicitacoes, o pedido de acesso nao entra em fila controlada.
+Com os dois SQLs aplicados, o dashboard passa a exigir autenticacao real e o cadastro deixa de ser publico.
